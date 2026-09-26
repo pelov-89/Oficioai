@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mi IA</title>
+  <title>OficioAI</title>
 
   <style>
     * {
@@ -47,6 +47,7 @@
       margin-bottom: 12px;
       max-width: 85%;
       line-height: 1.4;
+      white-space: pre-wrap;
     }
 
     .bot {
@@ -88,6 +89,11 @@
     button:active {
       transform: scale(0.97);
     }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
   </style>
 </head>
 
@@ -96,12 +102,12 @@
   <div class="app">
 
     <header>
-      Mi IA 🤖
+      OficioAI 🤖
     </header>
 
     <div id="chat">
       <div class="mensaje bot">
-        ¡Hola! 👋 Soy tu asistente. ¿En qué puedo ayudarte?
+        ¡Hola! 👋 Soy OficioAI. ¿En qué puedo ayudarte?
       </div>
     </div>
 
@@ -113,15 +119,16 @@
         onkeydown="if(event.key === 'Enter') enviar()"
       >
 
-      <button onclick="enviar()">Enviar</button>
+      <button id="boton" onclick="enviar()">Enviar</button>
     </div>
 
   </div>
 
   <script>
-    function enviar() {
+    async function enviar() {
       const input = document.getElementById("mensaje");
       const chat = document.getElementById("chat");
+      const boton = document.getElementById("boton");
 
       const texto = input.value.trim();
 
@@ -130,21 +137,63 @@
       const usuario = document.createElement("div");
       usuario.className = "mensaje usuario";
       usuario.textContent = texto;
-
       chat.appendChild(usuario);
 
       input.value = "";
+      boton.disabled = true;
 
-      const respuesta = document.createElement("div");
-      respuesta.className = "mensaje bot";
-      respuesta.textContent =
-        "He recibido tu mensaje 👍. Pronto podremos conectar la inteligencia artificial de verdad.";
+      const cargando = document.createElement("div");
+      cargando.className = "mensaje bot";
+      cargando.textContent = "Pensando...";
+      chat.appendChild(cargando);
 
-      chat.appendChild(respuesta);
+      chat.scrollTop = chat.scrollHeight;
 
+      try {
+        const respuesta = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            mensaje: texto
+          })
+        });
+
+        const datos = await respuesta.json();
+
+        cargando.remove();
+
+        const mensajeBot = document.createElement("div");
+        mensajeBot.className = "mensaje bot";
+
+        if (respuesta.ok) {
+          mensajeBot.textContent = datos.respuesta;
+        } else {
+          mensajeBot.textContent =
+            datos.error || "Ha ocurrido un error.";
+        }
+
+        chat.appendChild(mensajeBot);
+
+      } catch (error) {
+        cargando.remove();
+
+        const mensajeError = document.createElement("div");
+        mensajeError.className = "mensaje bot";
+        mensajeError.textContent =
+          "No se ha podido conectar con OficioAI.";
+
+        chat.appendChild(mensajeError);
+      }
+
+      boton.disabled = false;
+      input.focus();
       chat.scrollTop = chat.scrollHeight;
     }
   </script>
 
 </body>
 </html>
+
+
