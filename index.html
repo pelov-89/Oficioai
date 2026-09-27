@@ -234,6 +234,17 @@
 
       <div class="entrada">
 
+  <button
+    id="microfono"
+    class="enviar"
+    onclick="escuchar()"
+  >
+    🎙️
+  </button>
+
+  <input
+    id="mensaje"
+
         <input
           id="mensaje"
           type="text"
@@ -257,8 +268,33 @@
   </div>
 
   <script>
+const reconocimiento = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
+reconocimiento.lang = "es-ES";
+reconocimiento.continuous = false;
+reconocimiento.interimResults = false;
+
+function escuchar() {
+
+  const input = document.getElementById("mensaje");
+
+  reconocimiento.start();
+
+  reconocimiento.onresult = function(event) {
+    input.value = event.results[0][0].transcript;
+    input.focus();
+  };
+
+  reconocimiento.onerror = function() {
+    alert("No se ha podido activar el micrófono.");
+  };
+}
 let oficioSeleccionado = "";
+    function hablar(texto) {
+  const voz = new SpeechSynthesisUtterance(texto);
+  voz.lang = "es-ES";
+  speechSynthesis.speak(voz);
+    }
 
 function seleccionar(oficio) {
 
@@ -330,6 +366,7 @@ function seleccionar(oficio) {
 
         if (respuesta.ok) {
           mensajeBot.textContent = datos.respuesta;
+          hablar(datos.respuesta);
         } else {
           mensajeBot.textContent =
             datos.error || "Ha ocurrido un error.";
