@@ -258,14 +258,29 @@
 
   <script>
 
-    function seleccionar(oficio) {
+let oficioSeleccionado = "";
 
-      const input = document.getElementById("mensaje");
+function seleccionar(oficio) {
 
-      input.value = "Necesito ayuda con " + oficio + ". ";
+  oficioSeleccionado = oficio;
 
-      input.focus();
-    }
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("mensaje");
+
+  const mensaje = document.createElement("div");
+  mensaje.className = "mensaje bot";
+
+  mensaje.textContent =
+    "Has seleccionado " + oficio + ". 👷‍♂️\n\n" +
+    "Cuéntame qué necesitas y te ayudaré con esta especialidad.";
+
+  chat.appendChild(mensaje);
+
+  input.placeholder = "Consulta sobre " + oficio + "...";
+  input.focus();
+
+  chat.scrollTop = chat.scrollHeight;
+}
 
     async function enviar() {
 
@@ -300,8 +315,10 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            mensaje: texto
-          })
+  mensaje: oficioSeleccionado
+    ? "Especialidad: " + oficioSeleccionado + "\nConsulta: " + texto
+    : texto
+})
         });
 
         const datos = await respuesta.json();
