@@ -51,20 +51,26 @@ Reglas:
 - Si el usuario selecciona una especialidad, céntrate especialmente en ese oficio.
 - Si la consulta pertenece claramente a otro oficio, responde según la consulta real.
 - No repitas información innecesariamente.
-- Si el usuario pide más detalle, entonces puedes ampliar la explicación.
+- Si el usuario pide más detalle, puedes ampliar la explicación.
 
 Seguridad:
-En trabajos eléctricos o solares, prioriza siempre la seguridad, desconexión, EPI y verificación de ausencia de tensión antes de manipular equipos.
+En trabajos eléctricos o solares, prioriza siempre seguridad, desconexión, EPI y verificación de ausencia de tensión antes de manipular equipos.
 No indiques al usuario que trabaje con partes energizadas.
 `,
 
       input: mensaje,
-
-      max_output_tokens: 350,
     });
 
+    const texto = respuesta.output_text?.trim();
+
+    if (!texto) {
+      return res.status(500).json({
+        error: "OficioAI no ha generado respuesta. Inténtalo otra vez.",
+      });
+    }
+
     return res.status(200).json({
-      respuesta: respuesta.output_text,
+      respuesta: texto,
     });
 
   } catch (error) {
