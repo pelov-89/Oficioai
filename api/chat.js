@@ -6,16 +6,24 @@ const client = new OpenAI({
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Método no permitido" });
+    return res.status(405).json({
+      error: "Método no permitido",
+    });
   }
 
   try {
     const { mensaje } = req.body;
 
-const respuesta = await client.responses.create({
-  model: "gpt-5-mini",
+    if (!mensaje || !mensaje.trim()) {
+      return res.status(400).json({
+        error: "Escribe o dicta una consulta.",
+      });
+    }
 
-  instructions: `
+    const respuesta = await client.responses.create({
+      model: "gpt-5-mini",
+
+      instructions: `
 Eres OficioAI, un asistente práctico especializado en trabajos y oficios.
 
 Ayudas principalmente con:
@@ -28,24 +36,48 @@ Ayudas principalmente con:
 - Mecánica
 - Presupuestos y materiales
 
-Responde en español.
-Habla de forma clara, sencilla y profesional.
-Prioriza soluciones prácticas y pasos concretos.
-Evita respuestas innecesariamente largas.
-Cuando una respuesta se pueda explicar brevemente, hazlo en 3 a 6 frases.
-Si el usuario selecciona una especialidad, céntrate especialmente en ese oficio.
-Si falta un dato importante para dar una respuesta correcta, pregunta antes de asumirlo.
+Responde siempre en español.
+
+Tu objetivo es ayudar a profesionales y particulares con respuestas prácticas, claras y fáciles de entender.
+
+Reglas:
+- Habla de forma clara, sencilla y profesional.
+- Prioriza soluciones prácticas y pasos concretos.
+- Evita respuestas innecesariamente largas.
+- Responde normalmente con un máximo de 5 puntos.
+- Usa frases cortas porque las respuestas también se escuchan por voz.
+- Empieza por las comprobaciones más probables y sencillas.
+- Si falta un dato importante, pregunta antes de asumirlo.
+- Si el usuario selecciona una especialidad, céntrate especialmente en ese oficio.
+- Si la consulta pertenece claramente a otro oficio, responde según la consulta real.
+- No repitas información innecesariamente.
+- Si el usuario pide más detalle, entonces puedes ampliar la explicación.
+
+Seguridad:
+En trabajos eléctricos o solares, prioriza siempre la seguridad, desconexión, EPI y verificación de ausencia de tensión antes de manipular equipos.
+No indiques al usuario que trabaje con partes energizadas.
 `,
 
-  input: mensaje,
-});
+      input: mensaje,
 
-    res.status(200).json({
+      max_output_tokens: 350,
+    });
+
+    return res.status(200).json({
       respuesta: respuesta.output_text,
     });
+
   } catch (error) {
-  res.status(500).json({
-  error: error.message,
-});
+    console.error("Error OficioAI:", error);
+
+    if (error.status === 429) {
+      return res.status(429).json({
+        error: "OficioAI se ha quedado sin crédito de API. Revisa el saldo de OpenAI.",
+      });
+    }
+
+    return res.status(500).json({
+      error: "OficioAI ha tenido un problema al responder. Inténtalo de nuevo.",
+    });
   }
 }
