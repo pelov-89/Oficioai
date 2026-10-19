@@ -1,137 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <link rel="icon" type="image/png" href="/oficioai-icon.png">
-<link rel="apple-touch-icon" href="/oficioai-icon.png">
-<meta name="theme-color" content="#071a36">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OficioAI</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#071a36"><title>OficioAI</title>
+<link rel="icon" type="image/png" href="/oficioai-icon.png"><link rel="apple-touch-icon" href="/oficioai-icon.png">
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#0b0f19;color:white;height:100dvh}
-.app{width:100%;max-width:700px;height:100dvh;margin:auto;background:#111827;display:flex;flex-direction:column}
-header{padding:18px;text-align:center;border-bottom:1px solid #263244}
-.logo{font-size:24px;font-weight:bold}
-.subtitulo{display:block;margin-top:5px;color:#9ca3af;font-size:12px}
-#chat{flex:1;overflow-y:auto;padding:20px 16px;min-height:0}
-.mensaje{max-width:85%;padding:13px 16px;margin-bottom:14px;border-radius:18px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.bot{background:#1f2937;margin-right:auto;border-bottom-left-radius:5px}
-.usuario{background:#2563eb;margin-left:auto;border-bottom-right-radius:5px}
-.mensaje img{display:block;width:100%;max-height:250px;object-fit:contain;border-radius:10px;margin-bottom:8px}
-.funciones{padding:12px;border-top:1px solid #263244;border-bottom:1px solid #263244}
-.titulo-funciones{font-size:13px;color:#9ca3af;margin-bottom:10px}
-.botones-funciones{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px}
-.funcion{flex:0 0 auto;padding:9px 12px;border:1px solid #374151;border-radius:12px;background:#172033;color:white;font-size:13px}
-.funcion.activa{border-color:#60a5fa;background:#1e40af}
-.zona-inferior{padding:10px 12px 14px}
-.entrada{display:flex;gap:8px}
-input[type=text]{flex:1;min-width:0;padding:14px;border:1px solid #374151;border-radius:15px;background:#0f172a;color:white;font-size:16px;outline:none}
-input::placeholder{color:#6b7280}
-input:focus{border-color:#2563eb}
-.enviar{padding:0 13px;min-height:46px;border:0;border-radius:15px;background:#2563eb;color:white;font-weight:bold;cursor:pointer}
-.enviar:disabled{opacity:.5}
-.limpiar{display:block;margin:0 auto 8px;padding:6px 12px;border:1px solid #374151;border-radius:10px;background:transparent;color:#9ca3af;font-size:12px}
-.preview{display:flex;gap:10px;align-items:center;margin-bottom:8px;padding:8px;border:1px solid #374151;border-radius:12px}
-/* Importante: el atributo hidden debe ocultar la vista previa aunque use flex */
-.preview[hidden]{display:none!important}
-.preview img{height:70px;width:70px;object-fit:cover;border-radius:8px;flex-shrink:0}
-.preview span{flex:1;min-width:0;font-size:13px}
-.preview button{background:#374151;color:white;border:0;padding:10px;border-radius:10px;cursor:pointer}
-.estado{font-size:12px;color:#9ca3af;padding-bottom:5px}
-button:active{transform:scale(.97)}
+:root{color-scheme:dark;--bg:#080f21;--panel:#101d36;--line:#263959;--blue:#32a7ff;--muted:#a8bad2}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:var(--bg);color:#fff;min-height:100dvh}button,input{font:inherit}button{cursor:pointer}button:active{transform:scale(.98)}.app{max-width:760px;min-height:100dvh;margin:auto;background:linear-gradient(160deg,#101e38,#080f21 60%);display:flex;flex-direction:column}.top{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:10px}.brand img{width:43px;height:43px;border-radius:12px;object-fit:cover}.brand strong{font-size:22px}.brand small{display:block;color:var(--muted);font-size:11px}.pill{background:#183c67;color:#aee4ff;border:1px solid #315b86;border-radius:20px;padding:7px 11px;font-size:12px}.page{display:none;flex:1;min-height:0}.page.active{display:flex;flex-direction:column}.home{padding:20px 17px 24px;overflow:auto}.hero{border:1px solid #2a5685;border-radius:24px;background:radial-gradient(circle at 80% 10%,#164b7b,#102544 62%,#10213a);padding:20px;display:flex;align-items:center;gap:12px;min-height:180px}.hero h1{font-size:25px;line-height:1.12;margin:0 0 10px}.hero p{font-size:13px;color:#c5d7ed;margin:0}.hero img{width:40%;max-width:160px;aspect-ratio:1;object-fit:cover;border-radius:23px;animation:bob 2.8s ease-in-out infinite}.section-title{margin:24px 0 12px;font-size:16px}.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.tile{border:1px solid var(--line);background:#142540;color:white;border-radius:18px;text-align:left;padding:17px 13px;min-height:119px}.tile .emoji{font-size:28px;display:block;margin-bottom:9px}.tile strong{font-size:15px;display:block}.tile small{font-size:12px;color:var(--muted);display:block;margin-top:4px}.tile:first-child{border-color:#328bd1;background:#15365d}.tile:last-child:nth-child(odd){grid-column:span 2}.back{background:none;color:#a9dfff;border:0;padding:14px 17px;text-align:left}.content{padding:12px 17px 24px;overflow:auto}.content h2{margin:8px 0 10px}.content p{color:#b9cbe2;line-height:1.6}.notice{padding:16px;background:#142844;border:1px solid #34506f;border-radius:15px}.chat-page{min-height:0}.chat{flex:1;overflow-y:auto;padding:17px;min-height:0}.mensaje{max-width:88%;padding:12px 14px;margin-bottom:12px;border-radius:17px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}.bot{background:#1c2c45;margin-right:auto;border-bottom-left-radius:4px}.usuario{background:#2268bb;margin-left:auto;border-bottom-right-radius:4px}.mensaje img{display:block;width:100%;max-height:250px;object-fit:contain;border-radius:9px;margin-bottom:8px}.funciones{padding:10px 12px;border-top:1px solid var(--line)}.funciones label{font-size:12px;color:var(--muted);display:block;margin-bottom:7px}.botones-funciones{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px}.funcion{flex:0 0 auto;border:1px solid #39516e;border-radius:12px;padding:8px 11px;background:#172b49;color:white;font-size:12px}.funcion.activa{background:#155ca7;border-color:#69c4ff}.zona-inferior{padding:8px 12px max(13px,env(safe-area-inset-bottom))}.limpiar{display:block;margin:0 auto 8px;background:none;color:var(--muted);border:1px solid #33465f;border-radius:9px;padding:6px 10px;font-size:12px}.preview{display:flex;align-items:center;gap:10px;padding:8px;border:1px solid #374151;border-radius:12px;margin-bottom:8px}.preview[hidden]{display:none!important}.preview img{width:62px;height:62px;object-fit:cover;border-radius:8px}.preview span{flex:1;font-size:12px}.preview button{background:#344761;color:#fff;border:0;border-radius:9px;padding:9px}.estado{font-size:12px;color:var(--muted);padding-bottom:5px}.entrada{display:flex;gap:7px}.entrada input{flex:1;min-width:0;border:1px solid #3a4f6c;background:#0d1b31;border-radius:13px;color:white;padding:12px 9px;font-size:16px}.enviar{background:#1d76cb;color:#fff;border:0;border-radius:12px;padding:0 11px;min-height:46px}.enviar:disabled{opacity:.5}.intro{position:fixed;inset:0;background:radial-gradient(circle at center,#15395e,#070e1d 70%);z-index:5;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;text-align:center;transition:opacity .45s}.intro.hide{opacity:0;pointer-events:none}.intro img{width:min(57vw,240px);border-radius:28px;animation:arrive 1.25s cubic-bezier(.2,.8,.2,1) both,bob 2.4s ease-in-out 1.3s infinite}.intro h2{font-size:27px;margin:17px 0 5px}.intro p{color:#c8ddf2}.intro button{margin-top:15px;padding:11px 22px;border-radius:14px;background:#277bd2;color:#fff;border:0}.intro[hidden]{display:none!important}@keyframes arrive{from{transform:translateX(-130vw) rotate(-12deg);opacity:0}to{transform:translateX(0) rotate(0);opacity:1}}@keyframes bob{50%{transform:translateY(-7px)}}@media(prefers-reduced-motion:reduce){.intro img,.hero img{animation:none}}
 </style>
 </head>
 <body>
 <div class="app">
-<header><div class="logo">OficioAI 🤖</div><span class="subtitulo">Tu asistente inteligente para trabajos y oficios</span></header>
-<div id="chat"><div class="mensaje bot">¡Hola! 👋 Soy OficioAI. Elige un oficio o pregúntame directamente qué necesitas. También puedes enviar una fotografía.</div></div>
-<div class="funciones"><div class="titulo-funciones">🛠️ Trabajos y oficios</div><div class="botones-funciones">
-<button class="funcion" onclick="seleccionar('Electricidad',this)">⚡ Electricidad</button>
-<button class="funcion" onclick="seleccionar('Solar',this)">☀️ Solar</button>
-<button class="funcion" onclick="seleccionar('Fontanería',this)">🚰 Fontanería</button>
-<button class="funcion" onclick="seleccionar('Albañilería',this)">🧱 Albañilería</button>
-<button class="funcion" onclick="seleccionar('Pintura',this)">🎨 Pintura</button>
-<button class="funcion" onclick="seleccionar('Climatización',this)">❄️ Climatización</button>
-<button class="funcion" onclick="seleccionar('Mecánica',this)">🚗 Mecánica</button>
-<button class="funcion" onclick="seleccionar('Presupuestos',this)">📐 Presupuestos</button>
-</div></div>
-<div class="zona-inferior">
-<button class="limpiar" onclick="limpiarChat()">Limpiar conversación</button>
-<div id="preview" class="preview" hidden><img id="miniatura" alt="Fotografía seleccionada"><span>Foto preparada</span><button type="button" onclick="quitarFoto()">Quitar</button></div>
-<div class="estado" id="estado" aria-live="polite"></div>
-<div class="entrada">
-<button class="enviar" id="microfono" onclick="escuchar()" aria-label="Dictar pregunta">🎙️</button>
-<button class="enviar" onclick="document.getElementById('foto').click()" aria-label="Añadir fotografía">📷</button>
-<input id="foto" type="file" accept="image/*" hidden>
-<input id="mensaje" type="text" placeholder="Escribe tu consulta..." autocomplete="off" onkeydown="if(event.key==='Enter')enviar()">
-<button id="boton" class="enviar" onclick="enviar()">Enviar</button>
-</div></div></div>
+<header class="top"><div class="brand"><img src="/oficioai-icon.png" alt="Robot OficioAI"><div><strong>Oficio<span style="color:#39b8ff">AI</span></strong><small>Tu compañero inteligente</small></div></div><span class="pill">🤖 Beta</span></header>
+<section id="inicio" class="page home active"><div class="hero"><div><h1>¡Hola, compañero! 👋</h1><p>¿Qué vamos a solucionar hoy? Tu asistente para todos los oficios.</p></div><img src="/oficioai-icon.png" alt="Mascota OficioAI"></div><h2 class="section-title">¿Qué necesitas?</h2><div class="tiles"><button class="tile" onclick="mostrar('asistente')"><span class="emoji">🤖</span><strong>Asistente IA</strong><small>Preguntas, fotos y voz</small></button><button class="tile" onclick="mostrar('comunidad')"><span class="emoji">👥</span><strong>Comunidad</strong><small>Comparte y aprende</small></button><button class="tile" onclick="mostrar('empleo')"><span class="emoji">💼</span><strong>Empleo</strong><small>Ofertas y currículums</small></button><button class="tile" onclick="mostrar('perfil')"><span class="emoji">👷</span><strong>Mi perfil</strong><small>Tu experiencia profesional</small></button><button class="tile" onclick="mostrar('sugerencias')"><span class="emoji">💡</span><strong>Sugerencias</strong><small>Ayúdanos a mejorar</small></button></div></section>
+<section id="asistente" class="page chat-page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div id="chat" class="chat"><div class="mensaje bot">¡Hola! 👋 Soy OficioAI. Elige un oficio o pregúntame directamente qué necesitas. También puedes enviar una fotografía.</div></div><div class="funciones"><label>🛠️ Trabajos y oficios</label><div class="botones-funciones"><button class="funcion" onclick="seleccionar('Electricidad',this)">⚡ Electricidad</button><button class="funcion" onclick="seleccionar('Solar',this)">☀️ Solar</button><button class="funcion" onclick="seleccionar('Fontanería',this)">🚰 Fontanería</button><button class="funcion" onclick="seleccionar('Albañilería',this)">🧱 Albañilería</button><button class="funcion" onclick="seleccionar('Pintura',this)">🎨 Pintura</button><button class="funcion" onclick="seleccionar('Climatización',this)">❄️ Climatización</button><button class="funcion" onclick="seleccionar('Mecánica',this)">🚗 Mecánica</button><button class="funcion" onclick="seleccionar('Carpintería',this)">🪵 Carpintería</button><button class="funcion" onclick="seleccionar('Soldadura',this)">🔩 Soldadura</button><button class="funcion" onclick="seleccionar('Jardinería',this)">🌳 Jardinería</button><button class="funcion" onclick="seleccionar('Hostelería',this)">🍽️ Hostelería</button><button class="funcion" onclick="seleccionar('Limpieza',this)">🧹 Limpieza</button><button class="funcion" onclick="seleccionar('Transporte',this)">🚚 Transporte</button><button class="funcion" onclick="seleccionar('Peluquería',this)">✂️ Peluquería</button><button class="funcion" onclick="seleccionar('Presupuestos',this)">📐 Presupuestos</button></div></div><div class="zona-inferior"><button class="limpiar" onclick="limpiarChat()">Limpiar conversación</button><div id="preview" class="preview" hidden><img id="miniatura" alt="Fotografía seleccionada"><span>Foto preparada</span><button type="button" onclick="quitarFoto()">Quitar</button></div><div class="estado" id="estado" aria-live="polite"></div><div class="entrada"><button class="enviar" id="microfono" onclick="escuchar()" aria-label="Dictar pregunta">🎙️</button><button class="enviar" onclick="document.getElementById('foto').click()" aria-label="Añadir fotografía">📷</button><input id="foto" type="file" accept="image/*" hidden><input id="mensaje" type="text" placeholder="Escribe tu consulta..." autocomplete="off" onkeydown="if(event.key==='Enter')enviar()"><button id="boton" class="enviar" onclick="enviar()">Enviar</button></div></div></section>
+<section id="comunidad" class="page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div class="content"><h2>👥 Comunidad profesional</h2><div class="notice">🚧 Próximamente: comparte dudas, fotografías y vídeos de tus trabajos y recibe ayuda de otros profesionales.</div><p>Estamos preparando las cuentas de usuario, la moderación y el almacenamiento seguro.</p></div></section>
+<section id="empleo" class="page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div class="content"><h2>💼 OficioAI Empleo</h2><div class="notice">🚧 Próximamente: ofertas de trabajo, perfiles profesionales y envío de currículums.</div><p>Las ofertas y candidaturas todavía no están activadas.</p></div></section>
+<section id="perfil" class="page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div class="content"><h2>👷 Mi perfil profesional</h2><div class="notice">🚧 Próximamente: especialidades, experiencia y trabajos realizados.</div><p>Aún no hay registro de usuarios ni perfiles guardados.</p></div></section>
+<section id="sugerencias" class="page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div class="content"><h2>💡 Sugerencias</h2><div class="notice">🚧 Próximamente: propone mejoras y vota las ideas de la comunidad.</div><p>La recogida de sugerencias todavía no está activada.</p></div></section>
+</div>
+<div id="intro" class="intro" hidden><img src="/oficioai-icon.png" alt="Robot de bienvenida"><h2>¡Bienvenido a OficioAI!</h2><p>¡Hola, compañero! ¿Qué vamos a solucionar hoy?</p><button onclick="cerrarIntro()">Empezar →</button></div>
 <script>
 let oficioSeleccionado='',imagenPendiente=null;
-const chat=document.getElementById('chat');
-const preview=document.getElementById('preview');
-const miniatura=document.getElementById('miniatura');
-const fotoInput=document.getElementById('foto');
-function agregar(tipo,texto,imagen){
- const div=document.createElement('div');div.className='mensaje '+tipo;
- if(imagen){const img=document.createElement('img');img.src=imagen;img.alt='Fotografía enviada';div.appendChild(img)}
- const span=document.createElement('span');span.textContent=texto;div.appendChild(span);chat.appendChild(div);chat.scrollTop=chat.scrollHeight;return div;
-}
-function seleccionar(oficio,boton){
- oficioSeleccionado=oficio;document.querySelectorAll('.funcion').forEach(b=>b.classList.remove('activa'));
- boton.classList.add('activa');agregar('bot','Has seleccionado '+oficio+'. 👷‍♂️\n\nCuéntame qué necesitas y te ayudaré con esta especialidad.');
- const input=document.getElementById('mensaje');input.placeholder='Consulta sobre '+oficio+'...';input.focus();
-}
-function hablar(texto){
- if(!('speechSynthesis' in window))return;
- window.speechSynthesis.cancel();const voz=new SpeechSynthesisUtterance(texto);voz.lang='es-ES';window.speechSynthesis.speak(voz);
-}
-function escuchar(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
- if(!SR){alert('El reconocimiento de voz no está disponible en este navegador.');return}
- const reconocimiento=new SR();reconocimiento.lang='es-ES';reconocimiento.continuous=false;reconocimiento.interimResults=false;
- reconocimiento.onresult=e=>{const input=document.getElementById('mensaje');input.value=e.results[0][0].transcript;input.focus()};
- reconocimiento.onerror=()=>{document.getElementById('estado').textContent='No se ha podido activar el micrófono.'};
- try{reconocimiento.start()}catch(e){alert('No se pudo iniciar el micrófono.')}
-}
-function quitarFoto(){
- imagenPendiente=null;fotoInput.value='';preview.hidden=true;miniatura.removeAttribute('src');
-}
-fotoInput.addEventListener('change',async e=>{
- const archivo=e.target.files[0];if(!archivo)return;
- if(!archivo.type.startsWith('image/')){alert('Selecciona una imagen.');quitarFoto();return}
- if(archivo.size>10*1024*1024){alert('Elige una imagen de menos de 10 MB.');quitarFoto();return}
- let url;
- try{
-  url=URL.createObjectURL(archivo);const img=new Image();
-  await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url});
-  const escala=Math.min(1,1280/Math.max(img.width,img.height));const lienzo=document.createElement('canvas');
-  lienzo.width=Math.max(1,Math.round(img.width*escala));lienzo.height=Math.max(1,Math.round(img.height*escala));
-  lienzo.getContext('2d').drawImage(img,0,0,lienzo.width,lienzo.height);
-  imagenPendiente=lienzo.toDataURL('image/jpeg',.72);
-  miniatura.src=imagenPendiente;preview.hidden=false;
- }catch(err){quitarFoto();alert('No se ha podido preparar la fotografía.')}
- finally{if(url)URL.revokeObjectURL(url)}
-});
-async function enviar(){
- const input=document.getElementById('mensaje'),boton=document.getElementById('boton'),estado=document.getElementById('estado');
- const texto=input.value.trim(),imagen=imagenPendiente;if((!texto&&!imagen)||boton.disabled)return;
- agregar('usuario',texto||'Analiza esta fotografía.',imagen);input.value='';quitarFoto();boton.disabled=true;
- estado.textContent='Analizando consulta...';const cargando=agregar('bot','Pensando...');
- try{
-  const consulta=oficioSeleccionado?'Especialidad: '+oficioSeleccionado+'\nConsulta: '+(texto||'Analiza esta fotografía e indica qué se observa.'):(texto||'Analiza esta fotografía e indica qué se observa.');
-  const respuesta=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mensaje:consulta,imagen})});
-  const datos=await respuesta.json();cargando.remove();
-  if(respuesta.ok&&typeof datos.respuesta==='string'){agregar('bot',datos.respuesta);hablar(datos.respuesta);estado.textContent=''}
-  else{agregar('bot',datos.error||'Ha ocurrido un error.');estado.textContent='No se pudo completar la consulta.'}
- }catch(err){cargando.remove();agregar('bot','No se ha podido conectar con OficioAI.');estado.textContent='Error de conexión.'}
- finally{boton.disabled=false;input.focus()}
-}
-function limpiarChat(){
- window.speechSynthesis?.cancel();chat.innerHTML='';agregar('bot','¡Hola! 👋 Soy OficioAI. Elige un oficio o pregúntame directamente qué necesitas.');
- quitarFoto();document.getElementById('estado').textContent='';document.getElementById('mensaje').focus();
-}
+const chat=document.getElementById('chat'),preview=document.getElementById('preview'),miniatura=document.getElementById('miniatura'),fotoInput=document.getElementById('foto');
+function mostrar(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));}
+function cerrarIntro(){const intro=document.getElementById('intro');intro.classList.add('hide');setTimeout(()=>{intro.hidden=true},480);}
+// La bienvenida aparece solo una vez por sesión; no reproduce voz automáticamente para respetar las restricciones del navegador.
+if(!sessionStorage.getItem('oficioai-bienvenida')){const intro=document.getElementById('intro');intro.hidden=false;sessionStorage.setItem('oficioai-bienvenida','1');}
+function agregar(tipo,texto,imagen){const div=document.createElement('div');div.className='mensaje '+tipo;if(imagen){const img=document.createElement('img');img.src=imagen;img.alt='Fotografía enviada';div.appendChild(img)}const span=document.createElement('span');span.textContent=texto;div.appendChild(span);chat.appendChild(div);chat.scrollTop=chat.scrollHeight;return div;}
+function seleccionar(oficio,boton){oficioSeleccionado=oficio;document.querySelectorAll('.funcion').forEach(b=>b.classList.remove('activa'));boton.classList.add('activa');agregar('bot','Has seleccionado '+oficio+'. 👷‍♂️\n\nCuéntame qué necesitas y te ayudaré con esta especialidad.');const input=document.getElementById('mensaje');input.placeholder='Consulta sobre '+oficio+'...';input.focus();}
+function hablar(texto){if(!('speechSynthesis' in window))return;window.speechSynthesis.cancel();const voz=new SpeechSynthesisUtterance(texto);voz.lang='es-ES';voz.pitch=1.12;voz.rate=1.04;window.speechSynthesis.speak(voz);}
+function escuchar(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('El reconocimiento de voz no está disponible en este navegador.');return}const reconocimiento=new SR();reconocimiento.lang='es-ES';reconocimiento.continuous=false;reconocimiento.interimResults=false;reconocimiento.onresult=e=>{const input=document.getElementById('mensaje');input.value=e.results[0][0].transcript;input.focus()};reconocimiento.onerror=()=>{document.getElementById('estado').textContent='No se ha podido activar el micrófono.'};try{reconocimiento.start()}catch(e){alert('No se pudo iniciar el micrófono.')}}
+function quitarFoto(){imagenPendiente=null;fotoInput.value='';preview.hidden=true;miniatura.removeAttribute('src');}
+fotoInput.addEventListener('change',async e=>{const archivo=e.target.files[0];if(!archivo)return;if(!archivo.type.startsWith('image/')){alert('Selecciona una imagen.');quitarFoto();return}if(archivo.size>10*1024*1024){alert('Elige una imagen de menos de 10 MB.');quitarFoto();return}let url;try{url=URL.createObjectURL(archivo);const img=new Image();await new Promise((resolve,reject)=>{img.onload=resolve;img.onerror=reject;img.src=url});const escala=Math.min(1,1280/Math.max(img.width,img.height));const lienzo=document.createElement('canvas');lienzo.width=Math.max(1,Math.round(img.width*escala));lienzo.height=Math.max(1,Math.round(img.height*escala));lienzo.getContext('2d').drawImage(img,0,0,lienzo.width,lienzo.height);imagenPendiente=lienzo.toDataURL('image/jpeg',.72);miniatura.src=imagenPendiente;preview.hidden=false}catch(err){quitarFoto();alert('No se ha podido preparar la fotografía.')}finally{if(url)URL.revokeObjectURL(url)}});
+async function enviar(){const input=document.getElementById('mensaje'),boton=document.getElementById('boton'),estado=document.getElementById('estado');const texto=input.value.trim(),imagen=imagenPendiente;if((!texto&&!imagen)||boton.disabled)return;agregar('usuario',texto||'Analiza esta fotografía.',imagen);input.value='';quitarFoto();boton.disabled=true;estado.textContent='Analizando consulta...';const cargando=agregar('bot','Pensando...');try{const consulta=oficioSeleccionado?'Especialidad: '+oficioSeleccionado+'\nConsulta: '+(texto||'Analiza esta fotografía e indica qué se observa.'):(texto||'Analiza esta fotografía e indica qué se observa.');const respuesta=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mensaje:consulta,imagen})});const datos=await respuesta.json();cargando.remove();if(respuesta.ok&&typeof datos.respuesta==='string'){agregar('bot',datos.respuesta);hablar(datos.respuesta);estado.textContent=''}else{agregar('bot',datos.error||'Ha ocurrido un error.');estado.textContent='No se pudo completar la consulta.'}}catch(err){cargando.remove();agregar('bot','No se ha podido conectar con OficioAI.');estado.textContent='Error de conexión.'}finally{boton.disabled=false;input.focus()}}
+function limpiarChat(){window.speechSynthesis?.cancel();chat.innerHTML='';agregar('bot','¡Hola! 👋 Soy OficioAI. Elige un oficio o pregúntame directamente qué necesitas.');quitarFoto();document.getElementById('estado').textContent='';document.getElementById('mensaje').focus();}
 </script>
-</body>
-</html>
+</body></html>
