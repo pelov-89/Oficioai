@@ -57,7 +57,11 @@
 <section id="perfil" class="page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div class="content"><h2>👷 Mi perfil profesional</h2><div class="notice">🚧 Próximamente: especialidades, experiencia y trabajos realizados.</div><p>Aún no hay registro de usuarios ni perfiles guardados.</p></div></section>
 <section id="sugerencias" class="page"><button class="back" onclick="mostrar('inicio')">← Volver al inicio</button><div class="content"><h2>💡 Sugerencias</h2><div class="notice">🚧 Próximamente: propone mejoras y vota las ideas de la comunidad.</div><p>La recogida de sugerencias todavía no está activada.</p></div></section>
 </div>
-<div id="intro" class="intro" hidden><img src="/oficioai-icon.png" alt="Robot de bienvenida"><h2>¡Bienvenido a OficioAI!</h2><p>¡Hola, compañero! ¿Qué vamos a solucionar hoy?</p><button onclick="cerrarIntro()">Empezar →</button></div>
+<div id="intro" class="intro" hidden><video autoplay muted playsinline
+  poster="/oficioai-icon.png"
+  style="width:90%;max-width:400px;border-radius:20px">
+  <source src="/01a15503-052b-7c8b-9d7d-872bb5a580a6.mp4" type="video/mp4">
+</video><h2>¡Bienvenido a OficioAI!</h2><p>¡Hola, compañero! ¿Qué vamos a solucionar hoy?</p><button onclick="cerrarIntro()">Empezar →</button></div>
 <script>
 let oficioSeleccionado='',imagenPendiente=null;
 const chat=document.getElementById('chat'),preview=document.getElementById('preview'),miniatura=document.getElementById('miniatura'),fotoInput=document.getElementById('foto');
